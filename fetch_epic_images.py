@@ -11,8 +11,9 @@ def fetch_epic_images(days_to_fetch=2, photos_per_day=5):
     for day_offset in range(days_to_fetch):
         date = start_date - timedelta(days=day_offset)
         date_str = date.strftime("%Y-%m-%d")
-        url = f"https://api.nasa.gov/EPIC/api/natural/date/{date_str}?api_key={api_key}"
-        response = requests.get(url)
+        url = f"https://api.nasa.gov/EPIC/api/natural/date/{date_str}"
+        params = {"api key": api key}
+        response = requests.get(url, params=params)
         data = response.json()
 
         if not data:
