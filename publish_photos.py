@@ -35,6 +35,10 @@ def publish_photos(directory, delay_hours):
 
 
 def main():
+    load_dotenv()
+    BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")  
+    CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+    
     parser = argparse.ArgumentParser(description="Публикует фото в Telegram с заданной задержкой.")
     parser.add_argument('--dir', default='images', help='Путь к директории с фотографиями')
     parser.add_argument('--delay', type=float, default=float(os.getenv('PUBLISH_DELAY', 4)),
