@@ -5,11 +5,6 @@ import random
 import requests
 from dotenv import load_dotenv
 
-load_dotenv()
-
-BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")  
-CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")       
-
 
 def send_photo(photo_path):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendPhoto"
@@ -37,7 +32,7 @@ def publish_photos(directory, delay_hours):
 def main():
     load_dotenv()
     BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")  
-    CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+    CHAT_ID = os.getenv("TELEGRAM_CHAT_ID") 
     
     parser = argparse.ArgumentParser(description="Публикует фото в Telegram с заданной задержкой.")
     parser.add_argument('--dir', default='images', help='Путь к директории с фотографиями')
