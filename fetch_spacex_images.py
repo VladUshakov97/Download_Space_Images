@@ -29,7 +29,7 @@ def fetch_spacex_images(launch_id=None):
         filename = f"spacex_{index + 1}.jpg"
         save_image(image_response.content, output_folder, filename)
 
-if name == "__main__":
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Скачать изображения SpaceX по ID запуска")
     parser.add_argument("--launch_id", help="ID запуска SpaceX")
     args = parser.parse_args()
