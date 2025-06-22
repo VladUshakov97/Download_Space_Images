@@ -3,32 +3,41 @@ import os
 from datetime import datetime, timedelta
 from utils import setup_env, save_image
 
-def fetch_epic_images(days_to_fetch=2, photos_per_day=5):
-    api_key, folder = setup_env()
-    folder = os.path.join(folder, "epic")
+def fetch_epic_images(days_to_fetch=2, max_photos_per_day=5):
+    api_key, base_folder = setup_env()
+    epic_folder = os.path.join(base_folder, "epic")
+
     start_date = datetime.today() - timedelta(days=1)
 
     for day_offset in range(days_to_fetch):
-        date = start_date - timedelta(days=day_offset)
-        date_str = date.strftime("%Y-%m-%d")
-        url = f"https://api.nasa.gov/EPIC/api/natural/date/{date_str}"
-        params = {"api key": api key}
-        response = requests.get(url, params=params)
-        data = response.json()
+        target_date = start_date - timedelta(days=day_offset)
+        date_str = target_date.strftime("%Y-%m-%d")
 
-        if not data:
+        api_url = f"https://api.nasa.gov/EPIC/api/natural/date/{date_str}"
+        query_params = {"api_key": api_key}
+
+        response = requests.get(api_url, params=query_params)
+        response.raise_for_status()
+        epic_entries = response.json()
+
+        if not epic_entries:
             print(f"Нет фото за {date_str}")
             continue
 
-        print(f"Найдено {len(data)} фото за {date_str}")
+        print(f"Найдено {len(epic_entries)} фото за {date_str}")
 
-        for item in data[:photos_per_day]:
-            image_name = item["image"]
-            parts = date_str.split("-")
-            image_url = f"https://epic.gsfc.nasa.gov/archive/natural/{parts[0]}/{parts[1]}/{parts[2]}/png/{image_name}.png"
-            img_response = requests.get(image_url)
-            if img_response.status_code == 200:
-                save_image(img_response.content, folder, f"{image_name}.png")
+        for entry in epic_entries[:max_photos_per_day]:
+            image_name = entry["image"]
+            year, month, day = date_str.split("-")
+
+            image_url = (
+                f"https://epic.gsfc.nasa.gov/archive/natural/"
+                f"{year}/{month}/{day}/png/{image_name}.png"
+            )
+
+            image_response = requests.get(image_url)
+            if image_response.status_code == 200:
+                save_image(image_response.content, epic_folder, f"{image_name}.png")
             else:
                 print(f"Ошибка при скачивании {image_name}")
 
