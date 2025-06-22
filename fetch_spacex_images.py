@@ -5,28 +5,33 @@ from pathlib import Path
 
 def fetch_spacex_images(launch_id=None):
     if launch_id:
-        url = f"https://api.spacexdata.com/v5/launches/{launch_id}"
+        spacex_api_url = f"https://api.spacexdata.com/v5/launches/{launch_id}"
     else:
-        url = "https://api.spacexdata.com/v5/launches/latest"
+        spacex_api_url = "https://api.spacexdata.com/v5/launches/latest"
 
-    response = requests.get(url)
+    response = requests.get(spacex_api_url)
     response.raise_for_status()
-    data = response.json()
-    images = data["links"]["flickr"]["original"]
+    launch_data = response.json()
 
-    if not images:
+    image_urls = launch_data["links"]["flickr"]["original"]
+
+    if not image_urls:
         print("Нет изображений для этого запуска.")
         return
 
-    folder = Path("images/spacex")
-    for index, img_url in enumerate(images):
-        img_response = requests.get(img_url)
-        img_response.raise_for_status()
-        filename = f"spacex_{index+1}.jpg"
-        save_image(img_response.content, folder, filename)
+    output_folder = Path("images/spacex")
+    output_folder.mkdir(parents=True, exist_ok=True)
 
-if __name__ == "__main__":
+    for index, image_url in enumerate(image_urls):
+        image_response = requests.get(image_url)
+        image_response.raise_for_status()
+
+        filename = f"spacex_{index + 1}.jpg"
+        save_image(image_response.content, output_folder, filename)
+
+if name == "__main__":
     parser = argparse.ArgumentParser(description="Скачать изображения SpaceX по ID запуска")
     parser.add_argument("--launch_id", help="ID запуска SpaceX")
     args = parser.parse_args()
+
     fetch_spacex_images(args.launch_id)
