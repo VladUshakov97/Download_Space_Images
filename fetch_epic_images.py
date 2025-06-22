@@ -35,11 +35,12 @@ def fetch_epic_images(days_to_fetch=2, max_photos_per_day=5):
                 f"{year}/{month}/{day}/png/{image_name}.png"
             )
 
-            image_response = requests.get(image_url)
-            if image_response.status_code == 200:
+            try:
+                image_response = requests.get(image_url)
+                image_response.raise_for_status()
                 save_image(image_response.content, epic_folder, f"{image_name}.png")
-            else:
-                print(f"Ошибка при скачивании {image_name}")
+            except requests.HTTPError as error:
+                print(f"Ошибка при скачивании {image_name}: {error}")
 
 if __name__ == "__main__":
     fetch_epic_images()
