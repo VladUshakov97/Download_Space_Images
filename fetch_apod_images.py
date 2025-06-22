@@ -9,7 +9,7 @@ def fetch_apod_images(count=30):
         "api key": api key
     }
     
-    response = requests.get(url)
+    response = requests.get(url, params=params)
     response.raise_for_status()
     apod_items = response.json()
 
