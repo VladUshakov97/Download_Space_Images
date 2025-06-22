@@ -1,27 +1,31 @@
 import requests
 from utils import setup_env, get_image_extension, save_image
 
-def fetch_apod_images(count=30):
-    api_key, folder = setup_env()
-    url = f"https://api.nasa.gov/planetary/apod"
-    params = {
-        "count": count,
-        "api key": api key
-    }
-    
-    response = requests.get(url, params=params)
-    response.raise_for_status()
-    apod_items = response.json()
+def fetch_apod_images(image_count=30):
+    api_key, download_folder = setup_env()
 
-    for index, item in enumerate(apod_items):
-        if item.get("media_type") != "image":
+    api_url = "https://api.nasa.gov/planetary/apod"
+    query_params = {
+        "count": image_count,
+        "api_key": api_key  
+    }
+
+    response = requests.get(api_url, params=query_params)
+    response.raise_for_status()
+    apod_entries = response.json()
+
+    for index, entry in enumerate(apod_entries):
+        if entry.get("media_type") != "image":
             continue
-        img_url = item["url"]
-        img_response = requests.get(img_url)
-        img_response.raise_for_status()
-        ext = get_image_extension(img_url)
-        filename = f"nasa_apod_{index + 1}{ext}"
-        save_image(img_response.content, folder, filename)
+
+        image_url = entry["url"]
+        image_response = requests.get(image_url)
+        image_response.raise_for_status()
+
+        file_extension = get_image_extension(image_url)
+        filename = f"nasa_apod_{index + 1}{file_extension}"
+
+        save_image(image_response.content, download_folder, filename)
 
 if __name__ == "__main__":
     fetch_apod_images()
