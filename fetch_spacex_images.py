@@ -3,13 +3,10 @@ import requests
 from utils import save_image
 from pathlib import Path
 
-def fetch_spacex_images(launch_id=None):
-    if launch_id:
-        spacex_api_url = f"https://api.spacexdata.com/v5/launches/{launch_id}"
-    else:
-        spacex_api_url = "https://api.spacexdata.com/v5/launches/latest"
+def fetch_spacex_images(launch_id="latest"):
+    api_url = f"https://api.spacexdata.com/v5/launches/{launch_id}"
 
-    response = requests.get(spacex_api_url)
+    response = requests.get(api_url)
     response.raise_for_status()
     launch_data = response.json()
 
@@ -29,9 +26,13 @@ def fetch_spacex_images(launch_id=None):
         filename = f"spacex_{index + 1}.jpg"
         save_image(image_response.content, output_folder, filename)
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Скачать изображения SpaceX по ID запуска")
-    parser.add_argument("--launch_id", help="ID запуска SpaceX")
+if name == "__main__":
+    parser = argparse.ArgumentParser(description="Скачать изображения SpaceX по ID запуска (по умолчанию — последний)")
+    parser.add_argument(
+        "--launch_id",
+        default="latest",
+        help="ID запуска SpaceX (по умолчанию: 'latest')"
+    )
     args = parser.parse_args()
 
     fetch_spacex_images(args.launch_id)
