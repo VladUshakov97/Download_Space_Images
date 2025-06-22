@@ -3,7 +3,12 @@ from utils import setup_env, get_image_extension, save_image
 
 def fetch_apod_images(count=30):
     api_key, folder = setup_env()
-    url = f"https://api.nasa.gov/planetary/apod?count={count}&api_key={api_key}"
+    url = f"https://api.nasa.gov/planetary/apod"
+    params = {
+        "count": count,
+        "api key": api key
+    }
+    
     response = requests.get(url)
     response.raise_for_status()
     apod_items = response.json()
