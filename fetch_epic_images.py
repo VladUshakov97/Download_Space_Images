@@ -1,3 +1,4 @@
+
 import requests
 import os
 from datetime import datetime, timedelta
@@ -18,15 +19,15 @@ def fetch_epic_images(days_to_fetch=2, max_photos_per_day=5):
 
         response = requests.get(api_url, params=query_params)
         response.raise_for_status()
-        epic_entries = response.json()
+        epic_images = response.json()
 
-        if not epic_entries:
+        if not epic_images:
             print(f"Нет фото за {date_str}")
             continue
 
-        print(f"Найдено {len(epic_entries)} фото за {date_str}")
+        print(f"Найдено {len(epic_images)} фото за {date_str}")
 
-        for entry in epic_entries[:max_photos_per_day]:
+        for entry in epic_images[:max_photos_per_day]:
             image_name = entry["image"]
             year, month, day = date_str.split("-")
 
