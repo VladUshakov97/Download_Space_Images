@@ -8,7 +8,7 @@ def fetch_spacex_images(launch_id="latest"):
 
     response = requests.get(api_url)
     response.raise_for_status()
-    spacex_launch = response.json()  # <-- Переименовано
+    spacex_launch = response.json() 
 
     image_urls = spacex_launch["links"]["flickr"]["original"]
 
