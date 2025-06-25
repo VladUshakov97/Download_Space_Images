@@ -8,9 +8,9 @@ def fetch_spacex_images(launch_id="latest"):
 
     response = requests.get(api_url)
     response.raise_for_status()
-    launch_data = response.json()
+    spacex_launch = response.json()  # <-- Переименовано
 
-    image_urls = launch_data["links"]["flickr"]["original"]
+    image_urls = spacex_launch["links"]["flickr"]["original"]
 
     if not image_urls:
         print("Нет изображений для этого запуска.")
@@ -19,14 +19,14 @@ def fetch_spacex_images(launch_id="latest"):
     output_folder = Path("images/spacex")
     output_folder.mkdir(parents=True, exist_ok=True)
 
-    for index, image_url in enumerate(image_urls):
+    for index, image_url in enumerate(image_urls, start=1):
         image_response = requests.get(image_url)
         image_response.raise_for_status()
 
-        filename = f"spacex_{index + 1}.jpg"
+        filename = f"spacex_{index}.jpg"
         save_image(image_response.content, output_folder, filename)
 
-if name == "__main__":
+if __name__ == "__main__": 
     parser = argparse.ArgumentParser(description="Скачать изображения SpaceX по ID запуска (по умолчанию — последний)")
     parser.add_argument(
         "--launch_id",
