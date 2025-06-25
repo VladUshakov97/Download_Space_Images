@@ -7,13 +7,13 @@ from dotenv import load_dotenv
 
 
 def send_photo(photo_path):
-    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendPhoto"
+    url = f"https://api.telegram.org/bot{bot_token}/sendPhoto"
     
     with open(photo_path, 'rb') as photo:
-        photo_data = photo.read()  # Читаем содержимое файла в память
+        photo_data = photo.read()  
 
-    files = {'photo': ('image.jpg', photo_data)}  # Передаём в виде кортежа (имя файла + данные)
-    data = {'chat_id': CHAT_ID, 'caption': f"Фото из космоса"}
+    files = {'photo': ('image.jpg', photo_data)} 
+    data = {'chat_id': chat_id, 'caption': f"Фото из космоса"}
     response = requests.post(url, files=files, data=data)
     print(f"Отправлено {photo_path}: {response.status_code}")
     if not response.ok:
@@ -34,8 +34,8 @@ def publish_photos(directory, delay_hours):
 
 def main():
     load_dotenv()
-    BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")  
-    CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+    bot_token = os.getenv("TELEGRAM_BOT_TOKEN")  
+    chat_id = os.getenv("TELEGRAM_CHAT_ID")
 
     parser = argparse.ArgumentParser(description="Публикует фото в Telegram с заданной задержкой.")
     parser.add_argument('--dir', default='images', help='Путь к директории с фотографиями')
@@ -43,7 +43,7 @@ def main():
                         help='Задержка между публикациями (в часах)')
     args = parser.parse_args()
 
-    if not BOT_TOKEN or not CHAT_ID:
+    if not bot_token or not chat_id:
         print("Ошибка: TELEGRAM_BOT_TOKEN и TELEGRAM_CHAT_ID должны быть заданы в .env")
         return
 
