@@ -1,5 +1,23 @@
 # Загрузка изображений из космоса
 Скрипты для загрузки изображений с открытых API NASA (APOD, EPIC) и SpaceX.
+## Переменные окружения
+Программа использует переменные окружения, которые необходимо указать в файле '.env' в корневой директории проекта. 
+- NASA_API_KEY — API-ключ для получения изображений NASA. Можно получить на сайте [api.nasa.gov](https://api.nasa.gov).
+- PATH_TO_IMAGE — путь к папке для сохранения изображений с NASA. По умолчанию используется "images".
+
+- TELEGRAM_BOT_TOKEN — токен Telegram-бота. Получается у [BotFather](https://t.me/BotFather).
+- TELEGRAM_CHAT_ID — ID чата, в который будут отправляться изображения.
+- PUBLISH_DELAY — задержка между публикациями изображений в Telegram (в часах). По умолчанию — 4 часа.
+
+Пример содержимого .env:
+
+```env
+NASA_API_KEY=DEMO_KEY
+PATH_TO_IMAGE=images
+TELEGRAM_BOT_TOKEN=your_bot_token
+TELEGRAM_CHAT_ID=123456789
+PUBLISH_DELAY=4
+```
 ### Установка
 1. Клонируйте репозиторий:
 ```bash
