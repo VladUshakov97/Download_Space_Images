@@ -1,4 +1,3 @@
-
 import requests
 import os
 from datetime import datetime, timedelta
@@ -27,8 +26,8 @@ def fetch_epic_images(days_to_fetch=2, max_photos_per_day=5):
 
         print(f"Найдено {len(epic_images)} фото за {date_str}")
 
-        for entry in epic_images[:max_photos_per_day]:
-            image_name = entry["image"]
+        for image_info in epic_images[:max_photos_per_day]:
+            image_name = image_info["image"]
             year, month, day = date_str.split("-")
 
             image_url = (
