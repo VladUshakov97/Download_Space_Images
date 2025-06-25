@@ -14,7 +14,7 @@ def fetch_apod_images(image_count=30):
     response.raise_for_status()
     apod_entries = response.json()
 
-    for index, image_info in enumerate(apod_entries):
+    for index, image_info in enumerate(apod_entries, start=1):
         if image_info.get("media_type") != "image":
             continue
 
@@ -23,7 +23,7 @@ def fetch_apod_images(image_count=30):
         image_response.raise_for_status()
 
         file_extension = get_image_extension(image_url)
-        filename = f"nasa_apod_{index + 1}{file_extension}"
+        filename = f"nasa_apod_{index}{file_extension}"
 
         save_image(image_response.content, download_folder, filename)
 
