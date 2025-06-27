@@ -15,11 +15,11 @@ def fetch_apod_images(image_count=30):
     response.raise_for_status()
     apod_entries = response.json()
 
-    for index, image_info in enumerate(apod_entries, start=1):
-        if image_info.get("media_type") != "image":
+    for index, apod_entry in enumerate(apod_entries, start=1):
+        if apod_entry.get("media_type") != "image":
             continue
 
-        image_url = image_info["url"]
+        image_url = apod_entry["url"]
         image_response = requests.get(image_url)
         image_response.raise_for_status()
 
