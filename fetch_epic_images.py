@@ -27,8 +27,8 @@ def fetch_epic_images(days_to_fetch=2, max_photos_per_day=5):
 
         print(f"Найдено {len(epic_images)} фото за {date_str}")
 
-        for image_data in epic_images[:max_photos_per_day]:
-            image_name = image_data["image"]
+        for epic_image_entry in epic_images[:max_photos_per_day]:
+            image_name = epic_image_entry["image"]
             year, month, day = date_str.split("-")
 
             image_url = (
