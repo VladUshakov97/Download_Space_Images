@@ -1,7 +1,8 @@
 import requests
 import os
 from datetime import datetime, timedelta
-from utils import save_image
+from utils import setup_env, save_image
+
 
 def fetch_epic_images(days_to_fetch=2, max_photos_per_day=5):
     api_key, base_folder = setup_env()
@@ -43,6 +44,7 @@ def fetch_epic_images(days_to_fetch=2, max_photos_per_day=5):
                 continue
 
             save_image(image_response.content, epic_folder, f"{image_name}.png")
+
 
 if __name__ == "__main__":
     fetch_epic_images()
