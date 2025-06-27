@@ -1,5 +1,5 @@
 import requests
-from utils import setup_env, get_image_extension, save_image
+from utils import get_image_extension, save_image
 
 def fetch_apod_images(image_count=30):
     api_key, download_folder = setup_env()
